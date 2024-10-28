@@ -1,7 +1,26 @@
 import numpy as np
 import pandas as pd
 
-class ControlCharts:    
+class ControlCharts:
+    """
+    Parameters
+    -----------
+    df : Pandas Dataframe
+        This is the pandas dataframe. This dataframe must 
+        included the column where you want to perform control charts
+    arr : String
+        This is the name of the column where you want to perform control charts
+    ucl : Float or Int
+        Default to ``None``. 
+    lcl : Float or Int
+        Default to ``None``.
+    target : Float or Int
+        Default to ``None``. Metric Target
+    stages : String
+        Name of the column where stages is set.
+    tests : Dictionary
+        Dictionary of tests to execute.
+    """
     def __init__(
             self,
             df: pd.DataFrame,
@@ -52,6 +71,9 @@ class ControlCharts:
         return np.mean(differences) / 1.128
 
     def run_tests(self) -> None:
+        """
+            This function will run required tests
+        """
         if self.tests['Test 1']:
             self.test_1()
 
