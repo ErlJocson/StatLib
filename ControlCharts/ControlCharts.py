@@ -10,12 +10,22 @@ class ControlCharts:
             lcl: bool = None,
             target: float = None,
             stages: str = None,
-            ):
-        
+            tests: dict = {
+                "Test 1": True,
+                "Test 2": True,
+                "Test 3": True,
+                "Test 4": True,
+                "Test 5": True,
+                "Test 6": True,
+                "Test 7": True,
+                "Test 8": True
+            }
+    ):   
         self.arr: np.array = np.array(df[arr])
         self.mean: float = np.mean(self.arr)
         self.standard_deviation: float = self.get_moving_standard_deviation()
         self.list_fail: np.array = np.zeros(len(self.arr), dtype=int)
+        self.tests = tests
 
         if target:
             self.target: float = target
@@ -42,15 +52,30 @@ class ControlCharts:
         return np.mean(differences) / 1.128
 
     def run_tests(self) -> None:
-        self.test_1()
-        self.test_2()
-        self.test_3()
-        self.test_4()
-        self.test_5()
-        self.test_6()
-        self.test_7()
-        self.test_8()
-    
+        if self.tests['Test 1']:
+            self.test_1()
+
+        if self.tests['Test 2']:
+            self.test_2()
+
+        if self.tests['Test 3']:
+            self.test_3()
+
+        if self.tests['Test 4']:
+            self.test_4()
+
+        if self.tests['Test 5']:
+            self.test_5()
+
+        if self.tests['Test 6']:
+            self.test_6()
+
+        if self.tests['Test 7']:
+            self.test_7()
+
+        if self.tests['Test 8']:
+            self.test_8()
+        
     def test_1(self) -> None:
         """
             One point more than 3 standard deviation from the center line
@@ -80,10 +105,35 @@ class ControlCharts:
             elif all(self.arr[j] < self.arr[j+1] for j in range(i, i + 6)):
                 self.list_fail[i+6] = 3
     
+    # TODO: This test needs to be tested
     def test_4(self) -> None:
         """
             Fourteen points in a row is alternating up and down
         """
+        state: bool = None
+        counter: int = 0
+
+        for i in range(len(self.arr) - 1):
+            if not state:
+                state = "upwards" if self.arr[i] < self.arr[i+1] else "downwards"
+
+            elif state == "upwards" and self.arr[i] > self.arr[i+1]:
+                state = 'downards'
+                counter += 1
+
+            elif state == 'downwards' and self.arr[i] < self.arr[i+1]:
+                state = 'upwards'
+                counter += 1
+
+            else:
+                counter = 0
+                state = None
+
+            if counter == 14:
+                if all(self.arr[j] for j in range(i, i+14)):
+                    self.list_fail = 4
+                    counter = 0
+                    state = None
 
     # TODO: This needs to be refined
     def test_5(self) -> None:
