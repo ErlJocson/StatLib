@@ -4,7 +4,7 @@ import pandas as pd
 class ControlCharts:
     """
     Parameters
-    -----------
+    ----------
     df : Pandas Dataframe
         This is the pandas dataframe. This dataframe must 
         included the column where you want to perform control charts
@@ -39,7 +39,7 @@ class ControlCharts:
                 "Test 7": True,
                 "Test 8": True
             }
-    ):
+    ) -> None:
         self.arr: np.array = np.array(df[arr])
         self.mean: float = np.mean(self.arr)
         self.standard_deviation: float = self.get_moving_standard_deviation()
@@ -140,7 +140,7 @@ class ControlCharts:
                 state = "upwards" if self.arr[i] < self.arr[i+1] else "downwards"
 
             elif state == "upwards" and self.arr[i] > self.arr[i+1]:
-                state = 'downards'
+                state = 'downwards'
                 counter += 1
 
             elif state == 'downwards' and self.arr[i] < self.arr[i+1]:
