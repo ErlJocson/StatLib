@@ -178,9 +178,9 @@ class ControlCharts:
                 counter_two_sigma_above += 1
                 
             if counter_two_sigma_above > 1:
-                self.list_fail[i] = 5
-                self.list_fail[i + 1] = 5
-                self.list_fail[i + 2] = 5
+                self.list_fail[i] = 5 if self.arr[i] > two_sigma_above else 0
+                self.list_fail[i + 1] = 5 if self.arr[i + 1] > two_sigma_above else 0
+                self.list_fail[i + 2] = 5 if self.arr[i + 2] > two_sigma_above else 0
                 
             counter_two_sigma_above = 0
             
@@ -194,26 +194,64 @@ class ControlCharts:
                 counter_two_sigma_below += 1
                 
             if counter_two_sigma_below > 1:
-                self.list_fail[i] = 5
-                self.list_fail[i + 1] = 5
-                self.list_fail[i + 2] = 5
+                self.list_fail[i] = 5 if self.arr[i] > two_sigma_below else 0
+                self.list_fail[i + 1] = 5 if self.arr[i + 1] > two_sigma_below else 0
+                self.list_fail[i + 2] = 5 if self.arr[i + 2] > two_sigma_below else 0
                 
             counter_two_sigma_below = 0
-            
+    
+    # TODO: This test needs to be redefined and tested
     def test_6(self) -> None:
         """
             Four out of five points more than 1sigma from center line (same side)
         """
+        counter_one_sigma_below: int = 0
+        counter_one_sigma_above: int = 0
+        one_sigma_above: float = None
+        one_sigma_below: float = None
 
+        for i in range(len(self.arr) - 5):
+            if any(self.arr[j] > one_sigma_above for j in range(i, i+5)):
+                counter_one_sigma_above += 1
+            
+            if any(self.arr[j] < one_sigma_below for j in range(i, i+5)):
+                counter_one_sigma_below += 1
+
+            if counter_one_sigma_below >= 4:
+                self.list_fail[i] = 6 if self.arr[i] < one_sigma_below else 0
+                self.list_fail[i + 1] = 6 if self.arr[i + 1] < one_sigma_below else 0
+                self.list_fail[i + 2] = 6 if self.arr[i + 2] < one_sigma_below else 0
+                self.list_fail[i + 3] = 6 if self.arr[i + 3] < one_sigma_below else 0
+                self.list_fail[i + 4] = 6 if self.arr[i + 4] < one_sigma_below else 0
+
+            if counter_one_sigma_above >= 4:
+                self.list_fail[i] = 6 if self.arr[i] > one_sigma_above else 0
+                self.list_fail[i + 1] = 6 if self.arr[i + 1] > one_sigma_above else 0
+                self.list_fail[i + 2] = 6 if self.arr[i + 2] > one_sigma_above else 0
+                self.list_fail[i + 3] = 6 if self.arr[i + 3] > one_sigma_above else 0
+                self.list_fail[i + 4] = 6 if self.arr[i + 4] > one_sigma_above else 0
+
+            counter_one_sigma_below = 0
+            counter_one_sigma_above = 0
+
+    # TODO: this test needs to validated
     def test_7(self) -> None:
         """
             Fifteen points in a row within 1 sigma of center line (either side)
         """
+        
+        for i in range(len(self.arr) - 15):
+            if all(self.arr[j] < self.mean + self.standard_deviation and self.arr[j] > self.mean - self.standard_deviation for j in range(i, i + 15)):
+                self.list_fail[i + 14] = 7
 
+    # TODO: this test needs to be validated
     def test_8(self) -> None:
         """
             Eight points in a row more than 1 sigma from center line (either side)
         """
+        for i in range(len(self.arr) - 8):
+            if all(self.arr[j] > self.mean + self.standard_deviation and self.arr[j] < self.mean - self.standard_deviation for j in range(i, i+15)):
+                self.list_fail[i+7] = 8
 
     def print_chart(self) -> None:
         pass
