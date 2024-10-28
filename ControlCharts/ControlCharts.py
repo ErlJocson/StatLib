@@ -221,9 +221,9 @@ class ControlCharts:
         sns.despine()
         for i in range(len(new_df)):
             plt.annotate(new_df['Test Failed'][i], (new_df['Order Column'][i], new_df['Tested Column'][i]), xytext=(3, 3), textcoords='offset points')
-        plt.axhline(y=self.ucl, color='blue', linestyle='--')
-        plt.axhline(y=self.lcl, color='blue', linestyle='--')
-        plt.axhline(y=self.mean, color='red', linestyle='--')
+        plt.axhline(y=self.ucl, color='green', linestyle='--', linewidth = 0.7)
+        plt.axhline(y=self.lcl, color='green', linestyle='--', linewidth = 0.7)
+        plt.axhline(y=self.mean, color='blue', linestyle='--', linewidth = 0.7)
         plt.show()
 
     def return_dataframe_with_failed_tests(self) -> None:
