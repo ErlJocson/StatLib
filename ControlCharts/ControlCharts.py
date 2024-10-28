@@ -1,5 +1,7 @@
 import numpy as np
 import pandas as pd
+import seaborn as sns
+from matplotlib import pyplot as plt
 
 class ControlCharts:
     """
@@ -104,7 +106,7 @@ class ControlCharts:
         """
         for i in range(len(self.arr)):
             if self.arr[i] > self.ucl or self.arr[i] < self.lcl:
-                self.list_fail[i] = 1
+                self.list_fail[i] = "1"
 
     def test_2(self) -> None:  
         """
@@ -112,10 +114,10 @@ class ControlCharts:
         """
         for i in range(len(self.arr) - 9):
             if all(self.arr[j] < self.mean for j in range(i, i+8)):
-                self.list_fail[i + 8] = 2
+                self.list_fail[i + 8] = "2"
 
             elif all(self.arr[j] > self.mean for j in range(i, i+8)):
-                self.list_fail[i + 8] = 2
+                self.list_fail[i + 8] = "2"
     
     def test_3(self) -> None:
         """
@@ -123,9 +125,9 @@ class ControlCharts:
         """
         for i in range(len(self.arr) - 6):
             if all(self.arr[j] > self.arr[j+1] for j in range(i, i + 6)):
-                self.list_fail[i+6] = 3
+                self.list_fail[i+6] = "3"
             elif all(self.arr[j] < self.arr[j+1] for j in range(i, i + 6)):
-                self.list_fail[i+6] = 3
+                self.list_fail[i+6] = "3"
     
     def test_4(self) -> None:
         """
@@ -138,7 +140,7 @@ class ControlCharts:
         for i in range(len(self.arr) - 1):
             if counter == 14:
                 for j in failed_tests:
-                    self.list_fail[j] = 4
+                    self.list_fail[j] = "4"
                 counter = 0
 
             if not state:
@@ -167,57 +169,69 @@ class ControlCharts:
         upper_threshold = self.mean + 2 * self.standard_deviation
         lower_threshold = self.mean - 2 * self.standard_deviation
     
-        for i in range(len(self.arr) - 2):  # Iterate over windows of 3 points
+        for i in range(len(self.arr) - 2):
             num_above = sum(1 for j in range(i, i + 3) if self.arr[j] > upper_threshold)
             num_below = sum(1 for j in range(i, i + 3) if self.arr[j] < lower_threshold)
     
             if num_above >= 2 or num_below >= 2:
                 for j in range(i, i + 3):
-                    self.list_fail[j] = 5 if (self.arr[j] > upper_threshold or self.arr[j] < lower_threshold) else 0
+                    self.list_fail[j] = "5" if (self.arr[j] > upper_threshold or self.arr[j] < lower_threshold) else "0"
     
-    # TODO: This test needs to be redefined and tested
+    # TODO: This test needs to be validated but this test is already working
     def test_6(self) -> None:
         """
             Four out of five points more than 1sigma from center line (same side)
         """
-        counter: int = 0
         one_sigma_above: float = self.mean + self.standard_deviation
         one_sigma_below: float = self.mean - self.standard_deviation
 
-        for i in range(len(self.arr) - 5):
-            if any(self.arr[j] > one_sigma_above or self.arr[j] < one_sigma_below for j in range(i, i+5)):
-                counter += 1
+        for i in range(len(self.arr) - 4):
+            num_above = sum(1 for j in range(i, i + 5) if self.arr[j] > one_sigma_above)
+            num_below = sum(1 for j in range(i, i + 5) if self.arr[j] < one_sigma_below)
 
-            if counter >= 4:
-                self.list_fail[i] = 6 if self.arr[i] > one_sigma_above or self.arr[i] < one_sigma_below else 0
-                self.list_fail[i + 1] = 6 if self.arr[i + 1] > one_sigma_above or self.arr[i + 1] < one_sigma_below else 0
-                self.list_fail[i + 2] = 6 if self.arr[i + 2] > one_sigma_above or self.arr[i + 2] < one_sigma_below else 0
-                self.list_fail[i + 3] = 6 if self.arr[i + 3] > one_sigma_above or self.arr[i + 3] < one_sigma_below else 0
-                self.list_fail[i + 4] = 6 if self.arr[i + 4] > one_sigma_above or self.arr[i + 4] < one_sigma_below else 0
-                counter = 0
-            counter = 0
+            if num_above >= 4 or num_below >= 4:
+                for j in range(i, i + 5):
+                    self.list_fail[j] = "6" if (self.arr[j] > one_sigma_above or self.arr[j] < one_sigma_below) else "0"
 
     # TODO: this test needs to validated
     def test_7(self) -> None:
         """
             Fifteen points in a row within 1 sigma of center line (either side)
         """
-
         for i in range(len(self.arr) - 15):
-            if all(self.arr[j] < self.mean + self.standard_deviation and self.arr[j] > self.mean - self.standard_deviation for j in range(i, i + 15)):
-                self.list_fail[i + 14] = 7
+            if all(self.arr[j] < self.mean + self.standard_deviation or self.arr[j] > self.mean - self.standard_deviation for j in range(i, i + 14)):
+                self.list_fail[i + 14] = "7"
 
     # TODO: this test needs to be validated
     def test_8(self) -> None:
         """
             Eight points in a row more than 1 sigma from center line (either side)
         """
-        for i in range(len(self.arr) - 8):
-            if all(self.arr[j] > self.mean + self.standard_deviation and self.arr[j] < self.mean - self.standard_deviation for j in range(i, i+15)):
-                self.list_fail[i+7] = 8
+        upper_threshold = self.mean + self.standard_deviation
+        lower_threshold = self.mean - self.standard_deviation
+
+        for i in range(len(self.arr) - 7):
+            if sum(1 for j in range(i, i+8) if (self.arr[j] > upper_threshold or self.arr[j] < lower_threshold)) == 8:
+                self.list_fail[i+7] = "8"
 
     def print_chart(self) -> None:
-        pass
+        plt.figure(figsize = (10, 5))
+        new_df = self.return_dataframe_with_failed_tests()
+        sns.scatterplot(x = 'Order Column', y = "Tested Column", hue = "Fail", data = new_df, marker="o", palette=['red', 'blue'])
+        sns.despine()
+        for i in range(len(new_df)):
+            plt.annotate(new_df['Test Failed'][i], (new_df['Order Column'][i], new_df['Tested Column'][i]), xytext=(3, 3), textcoords='offset points')
+        plt.axhline(y=self.ucl, color='blue', linestyle='--')
+        plt.axhline(y=self.lcl, color='blue', linestyle='--')
+        plt.axhline(y=self.mean, color='red', linestyle='--')
+        plt.show()
 
     def return_dataframe_with_failed_tests(self) -> None:
-        pass
+        return pd.DataFrame(
+            {
+                "Tested Column": self.arr,
+                "Order Column": [i+1 for i in range(len(self.arr))],
+                "Test Failed": self.list_fail,
+                "Fail": ["No" if i == 0 else "Yes" for i in self.list_fail]
+            }
+        )
