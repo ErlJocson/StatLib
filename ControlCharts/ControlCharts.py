@@ -175,7 +175,7 @@ class ControlCharts:
     
             if num_above >= 2 or num_below >= 2:
                 for j in range(i, i + 3):
-                    self.list_fail[j] = "5" if (self.arr[j] > upper_threshold or self.arr[j] < lower_threshold) else "0"
+                    self.list_fail[j] = "5" if (self.arr[j] > upper_threshold or self.arr[j] < lower_threshold) else self.list_fail[j]
     
     # TODO: This test needs to be validated but this test is already working
     def test_6(self) -> None:
@@ -191,7 +191,7 @@ class ControlCharts:
 
             if num_above >= 4 or num_below >= 4:
                 for j in range(i, i + 5):
-                    self.list_fail[j] = "6" if (self.arr[j] > one_sigma_above or self.arr[j] < one_sigma_below) else "0"
+                    self.list_fail[j] = "6" if (self.arr[j] > one_sigma_above or self.arr[j] < one_sigma_below) else self.list_fail[j]
 
     # TODO: this test needs to validated
     def test_7(self) -> None:
