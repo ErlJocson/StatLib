@@ -63,7 +63,7 @@ class ControlCharts:
         """
             9 points in a row is on the same side of the center line (mean)
         """
-        for i in range(len(self.arr) - 8):
+        for i in range(len(self.arr) - 9):
             if all(self.arr[j] < self.mean for j in range(i, i+8)):
                 self.list_fail[i + 8] = 2
 
