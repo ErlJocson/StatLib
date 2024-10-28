@@ -74,31 +74,31 @@ class ControlCharts:
 
     def run_tests(self) -> None:
         """
-            This function will run required tests
+        This function will run required tests
         """
-        if self.tests['Test 1']:
-            self.test_1()
-
-        if self.tests['Test 2']:
-            self.test_2()
-
-        if self.tests['Test 3']:
-            self.test_3()
-
-        if self.tests['Test 4']:
-            self.test_4()
-
-        if self.tests['Test 5']:
-            self.test_5()
-
-        if self.tests['Test 6']:
-            self.test_6()
-
-        if self.tests['Test 7']:
-            self.test_7()
-
         if self.tests['Test 8']:
             self.test_8()
+    
+        if self.tests['Test 7']:
+            self.test_7()
+    
+        if self.tests['Test 6']:
+            self.test_6()
+    
+        if self.tests['Test 5']:
+            self.test_5()
+    
+        if self.tests['Test 4']:
+            self.test_4()
+    
+        if self.tests['Test 3']:
+            self.test_3()
+    
+        if self.tests['Test 2']:
+            self.test_2()
+    
+        if self.tests['Test 1']:
+            self.test_1()
         
     def test_1(self) -> None:
         """
