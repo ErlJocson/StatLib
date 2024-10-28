@@ -92,40 +92,41 @@ class ControlCharts:
         """
         two_sigma_above: float = self.mean + (2 * self.standard_deviation)
         two_sigma_below: float = self.mean - (2 * self.standard_deviation)
-        counter: int = 0
+        counter_two_sigma_above: int = 0
+        counter_two_sigma_below: int = 0
         
         for i in range(len(self.arr) - 2):
             if self.arr[i] > two_sigma_above:
-                counter += 1
+                counter_two_sigma_above += 1
                 
             if self.arr[i+1] > two_sigma_above:
-                counter += 1
+                counter_two_sigma_above += 1
                 
             if self.arr[i+2] > two_sigma_above:
-                counter += 1
+                counter_two_sigma_above += 1
                 
-            if counter > 1:
+            if counter_two_sigma_above > 1:
                 self.list_fail[i] = 5
                 self.list_fail[i + 1] = 5
                 self.list_fail[i + 2] = 5
                 
-            counter = 0
+            counter_two_sigma_above = 0
             
             if self.arr[i] < two_sigma_below:
-                counter += 1
+                counter_two_sigma_below += 1
                 
             if self.arr[i+1] < two_sigma_below:
-                counter += 1
+                counter_two_sigma_below += 1
                 
             if self.arr[i+2] < two_sigma_below:
-                counter += 1
+                counter_two_sigma_below += 1
                 
-            if counter > 1:
+            if counter_two_sigma_below > 1:
                 self.list_fail[i] = 5
                 self.list_fail[i + 1] = 5
                 self.list_fail[i + 2] = 5
                 
-            counter = 0
+            counter_two_sigma_below = 0
             
     def test_6(self) -> None:
         pass
