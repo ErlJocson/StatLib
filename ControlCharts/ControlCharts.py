@@ -20,7 +20,7 @@ class ControlCharts:
                 "Test 7": True,
                 "Test 8": True
             }
-    ):   
+    ):
         self.arr: np.array = np.array(df[arr])
         self.mean: float = np.mean(self.arr)
         self.standard_deviation: float = self.get_moving_standard_deviation()
@@ -83,7 +83,7 @@ class ControlCharts:
         for i in range(len(self.arr)):
             if self.arr[i] > self.ucl or self.arr[i] < self.lcl:
                 self.list_fail[i] = 1
-    
+
     def test_2(self) -> None:  
         """
             9 points in a row is on the same side of the center line (mean)
@@ -135,7 +135,7 @@ class ControlCharts:
                     counter = 0
                     state = None
 
-    # TODO: This needs to be refined
+    # TODO: This needs to be refined and tested
     def test_5(self) -> None:
         """
             Two out of three points are more than 2 sigma from the center line
@@ -179,13 +179,19 @@ class ControlCharts:
             counter_two_sigma_below = 0
             
     def test_6(self) -> None:
-        pass
+        """
+            Four out of five points more than 1sigma from center line (same side)
+        """
 
     def test_7(self) -> None:
-        pass
+        """
+            Fifteen points in a row within 1 sigma of center line (either side)
+        """
 
     def test_8(self) -> None:
-        pass
+        """
+            Eight points in a row more than 1 sigma from center line (either side)
+        """
 
     def print_chart(self) -> None:
         pass
