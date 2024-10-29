@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np 
 
 class BestClass:
     def __init__(
@@ -19,4 +20,5 @@ class BestClass:
 
     def performTransformation(self):
         pivotTable: pd.DataFrame = pd.pivot_table(self.df, index=self.agents, values=self.metric, columns=self.time, aggfunc='mean')
-        
+        row_std = np.nanstd(pivotTable, axis=1)
+
